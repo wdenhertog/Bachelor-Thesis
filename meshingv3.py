@@ -894,7 +894,7 @@ class mesh:
         self.threshold  = threshold
         self.relaxpoints = False
             # check whether saved mesh exists
-        file_str = "h"+np.array2string(h)+"_x"+np.array2string(x)+"_y"+np.array2string(y)+".npz"
+        file_str = "Grid/"+"h"+np.array2string(h)+"_x"+np.array2string(x)+"_y"+np.array2string(y)+".npz"
         try:
             npzfile = np.load(file_str)
             for key in npzfile.keys():
