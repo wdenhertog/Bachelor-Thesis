@@ -29,7 +29,7 @@
         <entry file="file://$PROJECT_DIR$/meshingv3.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-4218">
-              <caret line="1360" column="34" lean-forward="true" selection-start-line="1360" selection-start-column="34" selection-end-line="1360" selection-end-column="34" />
+              <caret line="1360" column="34" selection-start-line="1360" selection-start-column="34" selection-end-line="1360" selection-end-column="34" />
               <folding>
                 <element signature="e#242#260#0" expanded="true" />
               </folding>
@@ -68,6 +68,28 @@
             <path>
               <item name="BEP" type="b2602c69:ProjectViewProjectNode" />
               <item name="BEP" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BEP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BEP" type="462c0819:PsiDirectoryNode" />
+              <item name="Saved_figures" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BEP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BEP" type="462c0819:PsiDirectoryNode" />
+              <item name="Saved_qualitydata" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BEP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BEP" type="462c0819:PsiDirectoryNode" />
+              <item name="Saved_qualitydata" type="462c0819:PsiDirectoryNode" />
+              <item name="0.125" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BEP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BEP" type="462c0819:PsiDirectoryNode" />
+              <item name="Saved_qualitydata" type="462c0819:PsiDirectoryNode" />
+              <item name="0.0625" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -204,16 +226,15 @@
       <workItem from="1552676414494" duration="171000" />
       <workItem from="1552991007072" duration="605000" />
       <workItem from="1554065521050" duration="596000" />
-      <workItem from="1554066392979" duration="1226000" />
+      <workItem from="1554066392979" duration="1485000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3947000" />
+    <option name="totallyTimeSpent" value="4206000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26599148" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -226,11 +247,11 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49946696" weight="0.3290461" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.4989339" visible="true" weight="0.3290461" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50159913" side_tool="true" visible="true" weight="0.3290461" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010661" side_tool="true" visible="true" weight="0.3290461" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49840087" visible="true" weight="0.3290461" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49840087" weight="0.3290461" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -268,7 +289,7 @@
     <entry file="file://$PROJECT_DIR$/meshingv3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4218">
-          <caret line="1360" column="34" lean-forward="true" selection-start-line="1360" selection-start-column="34" selection-end-line="1360" selection-end-column="34" />
+          <caret line="1360" column="34" selection-start-line="1360" selection-start-column="34" selection-end-line="1360" selection-end-column="34" />
           <folding>
             <element signature="e#242#260#0" expanded="true" />
           </folding>
