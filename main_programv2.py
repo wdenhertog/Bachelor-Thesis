@@ -320,11 +320,13 @@ allmethodnames = ['Cut method', 'Cut and flip method', 'Shortest path fit', 'Sho
 # methodstoapply = []
 # methodstoapply = ['Cut method']
 # methodstoapply = ['Cut and flip method']
-methodstoapply = ['Shortest path fit']
+# methodstoapply = ['Shortest path fit']
 # methodstoapply = ['Shortest path fit with redistribution']
 # methodstoapply = ['Shortest path fit with fixed-point relaxation']
 # methodstoapply = ['Shortest path fit with Euler forward relaxation']
 # methodstoapply = ['Cut method','Cut and flip method']
+methodstoapply = ['Shortest path fit', 'Shortest path fit with redistribution',
+                  'Shortest path fit with Euler forward relaxation']
 # methodstoapply = allmethodnames
 
 
