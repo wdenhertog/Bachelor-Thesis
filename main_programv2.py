@@ -252,21 +252,21 @@ def simplesol(z, thresh, qdata, relaxthresh, newtriang=False, flip=False, distpl
 
     if shortestpath:  # facitates the shortest path method with some additional plots
         (boundarytype, boundaryplist) = m.setupboundaryplist()
-        savename = qdata.methodname
-        savename.replace(" ", "_")
-        print('---Plotting 1')
-        m.plotzeroz(directory + 'After_setuppoints_' + mname + '_' + z.__name__ + '_adjmesh.png', dist=distplot,
-                    plotchosenboundary=True)
+        # savename = qdata.methodname
+        # savename.replace(" ", "_")
+        # print('---Plotting 1')
+        # m.plotzeroz(directory + 'After_setuppoints_' + mname + '_' + z.__name__ + '_adjmesh.png', dist=distplot,
+        #           plotchosenboundary=True)
         zeropathlist = m.findshortestpath(boundaryplist, boundarytype)
-        print('---Plotting 2')
-        m.plotzeroz(directory + 'After_shortestpath_' + mname + '_' + z.__name__ + '_adjmesh.png', dist=distplot)
+        # print('---Plotting 2')
+        # m.plotzeroz(directory + 'After_shortestpath_' + mname + '_' + z.__name__ + '_adjmesh.png', dist=distplot)
 
         m.movetolevelset(zeropathlist)
         if redistribute:
             m.redistribute_projectedpoints(zeropathlist, z)
         m.finallevelsetinfoupdate()
-        print('---Plotting 3')
-        m.plotzeroz(directory + 'After_movetolevelset_' + mname + '_' + z.__name__ + '_adjmesh.png', dist=False, mode=2)
+        # print('---Plotting 3')
+        # m.plotzeroz(directory + 'After_movetolevelset_' + mname + '_' + z.__name__ + '_adjmesh.png', dist=False, mode=2)
 
     if fixedpointrelaxation:  # facilitates a fixed-point iteration scheme for mesh relaxation (divergent)
         m.fixedpoint()
@@ -286,23 +286,23 @@ def simplesol(z, thresh, qdata, relaxthresh, newtriang=False, flip=False, distpl
     savename.replace(" ", "_")
     print('---Plotting 4')
     m.plotzeroz(directory + 'After_' + mname + '_' + z.__name__ + '_adjmesh.png', dist=distplot)
-    return
+    return m
 
 
-def simplemeshfit(thresh, methodname, hstep, relaxthresh, farr=[cos_times_sin, linear, circle, star, dumbbell],
+def simplemeshfit(thresh, methodname, hstep, relaxthresh, farr=[linear, circle, star, dumbbell],
                   newtriang=False, flip=False, distplot=False, simplepointrelax=False, simplegridtozeropoint=False,
                   redistribute=False):
     # This function creates the qualitycontainer for a specific hstep size and method and applies the method through the simplesol function for each test-function in farr
     print('hstep = ' + str(hstep))
     qdata = qualitycontainer(methodname, hstep)
-    for i in range(len(farr)):
-        qdata.fnames.append(farr[i].__name__)
-        print('Applying method <' + methodname + '> for function ' + farr[i].__name__)
-        simplesol(farr[i], thresh, qdata, relaxthresh, newtriang=newtriang, flip=flip, distplot=distplot,
-                  simplepointrelax=simplepointrelax, simplegridtozeropoint=simplegridtozeropoint,
-                  redistribute=redistribute)
+
+    qdata.fnames.append(farr[0].__name__)
+    print('Applying method <' + methodname + '> for function ' + farr[0].__name__)
+    mf = simplesol(farr[0], thresh, qdata, relaxthresh, newtriang=newtriang, flip=flip, distplot=distplot,
+                   simplepointrelax=simplepointrelax, simplegridtozeropoint=simplegridtozeropoint,
+                   redistribute=redistribute)
     qdata.save(hstep)
-    return
+    return mf
 
 
 ##########################################################################
@@ -321,30 +321,30 @@ allmethodnames = ['Cut method', 'Cut and flip method', 'Shortest path fit', 'Sho
 # methodstoapply = ['Cut method']
 # methodstoapply = ['Cut and flip method']
 # methodstoapply = ['Shortest path fit']
-# methodstoapply = ['Shortest path fit with redistribution']
+methodstoapply = ['Shortest path fit with redistribution']
 # methodstoapply = ['Shortest path fit with fixed-point relaxation']
 # methodstoapply = ['Shortest path fit with Euler forward relaxation']
 # methodstoapply = ['Cut method','Cut and flip method']
-methodstoapply = ['Shortest path fit', 'Shortest path fit with redistribution',
-                  'Shortest path fit with Euler forward relaxation']
+# methodstoapply = ['Shortest path fit', 'Shortest path fit with redistribution',
+                  #'Shortest path fit with Euler forward relaxation']
 # methodstoapply = allmethodnames
 
 
 # Choose the right set of sizes to apply from the list below
 
-sizestoapply = [1 / 8, 1 / 16]
-# sizestoapply = [1/8]
+# sizestoapply = [1 / 8, 1 / 16]
+sizestoapply = [1/8]
 # sizestoapply = [1/16]
 
 
 # Choose the right set of test functions to apply below
 
-farr = [cos_times_sin, linear, circle, star, dumbbell]
+# farr = [cos_times_sin, linear, circle, star, dumbbell]
 # farr = [cos_times_sin,linear,circle]
 # farr = [star,dumbbell]
 # farr = [cos_times_sin]
 # farr = [circle]
-# farr = [linear]
+farr = [linear]
 # farr = [linear, circle, star, dumbbell]
 
 
