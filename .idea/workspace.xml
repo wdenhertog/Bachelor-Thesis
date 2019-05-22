@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="92ecc592-23a4-43c7-8cf2-84fd83d9c10d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FEM.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Average_skewness.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Average_skewness.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Maximum_size.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Maximum_size.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Maximum_skewness.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Maximum_skewness.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Minimum_size.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Minimum_size.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Standard_deviation_of_sizes.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Standard_deviation_of_sizes.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Standard_deviation_of_skewnesses.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved_figures/0.125/Quality_Standard_deviation_of_skewnesses.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved_qualitydata/0.125/Shortest_path_fit_with_redistribution.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Saved_qualitydata/0.125/Shortest_path_fit_with_redistribution.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_programv2.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_programv2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +33,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main_programv2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1059">
+            <state relative-caret-position="4437">
               <caret line="261" column="47" selection-start-line="261" selection-start-column="47" selection-end-line="261" selection-end-column="47" />
               <folding>
                 <element signature="e#242#265#0" expanded="true" />
@@ -53,8 +45,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/meshingv3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="1782" column="61" selection-start-line="1782" selection-start-column="53" selection-end-line="1782" selection-end-column="61" />
+            <state relative-caret-position="374">
+              <caret line="910" column="48" selection-start-line="910" selection-start-column="48" selection-end-line="910" selection-end-column="48" />
               <folding>
                 <element signature="e#242#260#0" expanded="true" />
               </folding>
@@ -62,11 +54,19 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/FEM.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="850">
+              <caret line="50" column="65" lean-forward="true" selection-start-line="50" selection-start-column="65" selection-end-line="50" selection-end-column="65" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -99,7 +99,13 @@
       <find>create_mesh</find>
       <find>Plotting</find>
       <find>plotting</find>
+      <find>size</find>
+      <find>^</find>
+      <find>calcsize</find>
     </findStrings>
+    <replaceStrings>
+      <replace>**</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -112,21 +118,21 @@
         <option value="$PROJECT_DIR$/main_programv2.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="D:/Downloads/LOL_OPGG_Observer_4036902600_spectate.bat" />
+        <option value="$PROJECT_DIR$/FEM.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2063" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1400" />
-    <option name="height" value="1000" />
+    <option name="width" value="1936" />
+    <option name="height" value="1066" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -134,10 +140,16 @@
               <item name="BEP" type="b2602c69:ProjectViewProjectNode" />
               <item name="BEP" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="BEP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BEP" type="462c0819:PsiDirectoryNode" />
+              <item name="Grid" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -303,31 +315,33 @@
       <workItem from="1554808703275" duration="1882000" />
       <workItem from="1558425022476" duration="6410000" />
       <workItem from="1558432696284" duration="1553000" />
+      <workItem from="1558535433583" duration="27000" />
+      <workItem from="1558535521978" duration="14695000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14976000" />
+    <option name="totallyTimeSpent" value="29698000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1066" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2771855" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2835821" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.3290461" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.3290461" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49840087" weight="0.3290461" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4978678" weight="0.3290461" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.24413647" side_tool="true" visible="true" weight="0.3290461" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.2468017" side_tool="true" visible="true" weight="0.3290461" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49946696" weight="0.3290461" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.75586355" visible="true" weight="0.3290461" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.75319827" visible="true" weight="0.3290461" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -350,6 +364,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://D:/Downloads/LOL_OPGG_Observer_4036902600_spectate.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="29" lean-forward="true" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/plottest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -360,19 +381,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/meshingv3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="1782" column="61" selection-start-line="1782" selection-start-column="53" selection-end-line="1782" selection-end-column="61" />
-          <folding>
-            <element signature="e#242#260#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main_programv2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1059">
+        <state relative-caret-position="4437">
           <caret line="261" column="47" selection-start-line="261" selection-start-column="47" selection-end-line="261" selection-end-column="47" />
           <folding>
             <element signature="e#242#265#0" expanded="true" />
@@ -380,17 +391,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/Downloads/LOL_OPGG_Observer_4036902600_spectate.bat">
+    <entry file="file://$PROJECT_DIR$/meshingv3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="29" lean-forward="true" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
+        <state relative-caret-position="374">
+          <caret line="910" column="48" selection-start-line="910" selection-start-column="48" selection-end-line="910" selection-end-column="48" />
+          <folding>
+            <element signature="e#242#260#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FEM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="850">
+          <caret line="50" column="65" lean-forward="true" selection-start-line="50" selection-start-column="65" selection-end-line="50" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
