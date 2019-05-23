@@ -21,8 +21,9 @@ def calculate_basisfunctions(e):
 
 
 def calculate_element_matrices(e, lbda, mu):
+    # calculation of the element matrices
     bf = calculate_basisfunctions(e)
-    e_sxx = e.size * np.zeros(shape=(3, 3))
+    e_sxx = np.zeros(shape=(3, 3))
     e_sxy = np.zeros(shape=(3, 3))
     e_syx = np.zeros(shape=(3, 3))
     e_syy = np.zeros(shape=(3, 3))
@@ -36,6 +37,8 @@ def calculate_element_matrices(e, lbda, mu):
 
 
 def stiffness_matrix(grid, lbda, mu):
+    # calculation of the big stifness matrix
+    # f=(fx_top, fx_left, fx_bottom, fx_right, fy_top, fy_left, fy_bottom, fy_right)
     sxx = np.zeros(shape=(len(grid.points), len(grid.points)))
     sxy = np.zeros(shape=(len(grid.points), len(grid.points)))
     syx = np.zeros(shape=(len(grid.points), len(grid.points)))
@@ -49,10 +52,14 @@ def stiffness_matrix(grid, lbda, mu):
                 syx[e.points[i].index][e.points[j].index] += e_syx[i][j]
                 syy[e.points[i].index][e.points[j].index] += e_syy[i][j]
     s = np.hstack((np.vstack((sxx, syx)), np.vstack((sxy, syy))))
+
+    # TODO: boundary conditions
+    # q = np.zeros(shape=(len(grid.points),1))
     return s
 
 
 def toexcel(s):
+    # just a function to check the layout of the matrix quickly
     workbook = xlsxwriter.Workbook('stiffnessmatrix.xlsx')
     worksheet = workbook.add_worksheet()
     for i in range(len(s)):
@@ -63,6 +70,8 @@ def toexcel(s):
 
 
 def checksymmetric(s):
+    # check if the (non-)zero places are symmetric
+    # (N.B. this does not necessarily mean that the matrix itself is symmetric!)
     for i in range(len(s)):
         for j in range(len(s)):
             if (s[i][j] == 0 and s[j][i] != 0) or (s[i][j] != 0 and s[j][i] == 0):

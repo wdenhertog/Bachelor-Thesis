@@ -4,7 +4,7 @@ m = mesh(hstep, hstep * 0.3)
 m.plot()
 
 hstep = 0.125
-farr = [circle]
+farr = [linear]
 methodname = 'Shortest path fit with redistribution'
 newtriang = False
 flip = False
