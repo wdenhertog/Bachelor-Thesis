@@ -77,3 +77,31 @@ def checksymmetric(s):
             if (s[i][j] == 0 and s[j][i] != 0) or (s[i][j] != 0 and s[j][i] == 0):
                 return False
     return True
+
+
+def meshrelaxation(grid, u, lbda, mu):
+    s = stiffness_matrix(grid, lbda, mu)
+
+    # restrict the vertical movement of the bottom and top boundaries and the horizontal movement of the left
+    # and right boundaries
+    for e in grid.boundarypoints:
+        if e.iscorner:
+            for i in range(2 * len(grid.points)):
+                s[e.index][i] = 0
+                s[e.index + len(grid.points)][i] = 0
+            s[e.index][e.index] = 1
+            s[e.index + len(grid.points)][e.index + len(grid.points)] = 1
+        elif e.coordinates[0] == 1 or e.coordinates[0] == -1:
+            for i in range(2 * len(grid.points)):
+                s[e.index][i] = 0
+            s[e.index][e.index] = 1
+        else:
+            for i in range(2 * len(grid.points)):
+                s[e.index + len(grid.points)][i] = 0
+            s[e.index + len(grid.points)][e.index + len(grid.points)] = 1
+    for i in range(len(u)):
+        if u[i] != 0:
+            for j in range(2 * len(grid.points)):
+                s[i][j] = 0
+            s[i][i] = 1
+    return np.linalg.solve(s, u)

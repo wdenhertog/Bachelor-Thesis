@@ -1,9 +1,8 @@
 from main_programv2 import *
 
+hstep = 0.0625
 m = mesh(hstep, hstep * 0.3)
 m.plot()
-
-hstep = 0.125
 farr = [linear]
 methodname = 'Shortest path fit with redistribution'
 newtriang = False
@@ -15,7 +14,7 @@ eulerrelaxation = False
 shortestpath = True
 distplot = True
 redistribute = True
-m_fit = simplemeshfit(0.3 * hstep, methodname, hstep, hstep / 100, farr, newtriang, flip, distplot, simplepointrelax,
+m_fit = simplemeshfit(hstep, methodname, hstep, hstep / 100, farr, newtriang, flip, distplot, simplepointrelax,
                       simplegridtozeropoint, redistribute)
 m_fit.plot()
 u_x_fit = []
