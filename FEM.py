@@ -99,6 +99,12 @@ def meshrelaxation(grid, u, lbda, mu):
             for i in range(2 * len(grid.points)):
                 s[e.index + len(grid.points)][i] = 0
             s[e.index + len(grid.points)][e.index + len(grid.points)] = 1
+    for i in range(len(grid.zpointongrid)):
+        for j in range(2*len(grid.points)):
+            s[grid.zpointongrid[i].index][j] = 0
+            s[grid.zpointongrid[i].index+len(grid.points)][j] = 0
+        s[grid.zpointongrid[i].index][grid.zpointongrid[i].index] = 1
+        s[grid.zpointongrid[i].index+len(grid.points)][grid.zpointongrid[i].index+len(grid.points)] = 1
     for i in range(len(u)):
         if u[i] != 0:
             for j in range(2 * len(grid.points)):
