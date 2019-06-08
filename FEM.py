@@ -111,3 +111,5 @@ def meshrelaxation(grid, u, lbda, mu):
                 s[i][j] = 0
             s[i][i] = 1
     return np.linalg.solve(s, u)
+
+

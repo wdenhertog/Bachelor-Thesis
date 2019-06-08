@@ -5,14 +5,14 @@ import main_programv2
 gridsize = 0.125
 hstep = gridsize
 threshold = 0.01
-lbda = 0.1
+lbda = 5
 mu = 3
 m = FEM.mesh(gridsize, threshold)
 m.plot()
 s = FEM.stiffness_matrix(m, lbda, mu)
 q = np.zeros((2 * len(m.points), 1))
-farr = [main_programv2.linear]
-methodname = 'Shortest path fit with Euler forward relaxation'
+farr = [main_programv2.dumbbell]
+methodname = 'FEM'
 newtriang = False
 flip = False
 simplepointrelax = False
