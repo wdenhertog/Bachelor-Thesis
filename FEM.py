@@ -100,11 +100,11 @@ def meshrelaxation(grid, u, lbda, mu):
                 s[e.index + len(grid.points)][i] = 0
             s[e.index + len(grid.points)][e.index + len(grid.points)] = 1
     for i in range(len(grid.zpointongrid)):
-        for j in range(2*len(grid.points)):
+        for j in range(2 * len(grid.points)):
             s[grid.zpointongrid[i].index][j] = 0
-            s[grid.zpointongrid[i].index+len(grid.points)][j] = 0
+            s[grid.zpointongrid[i].index + len(grid.points)][j] = 0
         s[grid.zpointongrid[i].index][grid.zpointongrid[i].index] = 1
-        s[grid.zpointongrid[i].index+len(grid.points)][grid.zpointongrid[i].index+len(grid.points)] = 1
+        s[grid.zpointongrid[i].index + len(grid.points)][grid.zpointongrid[i].index + len(grid.points)] = 1
     for i in range(len(u)):
         if u[i] != 0:
             for j in range(2 * len(grid.points)):
@@ -113,3 +113,34 @@ def meshrelaxation(grid, u, lbda, mu):
     return np.linalg.solve(s, u)
 
 
+def qualitycomparison(femgrid, efrgrid):
+    # calculate the quality of the mesh generated with FEM (femgrid) and the mesh generated with Euler Forward Relaxation (efrgrid)
+    femstats = femgrid.skewness()
+    efrstats = efrgrid.skewness()
+    femsizes = femgrid.sizes()
+    efrsizes = efrgrid.sizes()
+    for i in range(len(femsizes)):
+        femstats.append(femsizes[i])
+        efrstats.append(efrsizes[i])
+    femgof = femgrid.gof()
+    efrgof = efrgrid.gof()
+    for i in range(len(femgof)):
+        femstats.append(femgof[i])
+        efrstats.append(efrgof[i])
+    return femstats, efrstats
+
+
+def qualitycomparisonplot(femstats, efrstats, lbda, mu, method):
+    # create histograms of the quality comparison and save them on the harddrive
+    titles = ['Average skewness', 'Maximum skewness', 'Standard deviation of skewnesses', 'Minimum size',
+              'Maximum size', 'Standard deviation of sizes', 'Measure of length', 'Measure of area']
+    colors = ['xkcd:salmon', 'xkcd:light blue', 'xkcd:green', 'xkcd:yellow', 'xkcd:lilac', 'xkcd:royal blue']
+    for i in range(len(femstats)):
+        indices = np.arange(2)
+        pyplot.bar(indices, [femstats[i][1], efrstats[i][1]], color=colors)
+        pyplot.xticks(indices, ['FEM', 'EFR'])
+        pyplot.title(titles[i])
+        pyplot.savefig(
+            'figures_FEM/' + titles[i].replace(' ', '_') + '_l_' + str(lbda) + '_m_' + str(mu) + '_' + method + '.png')
+        pyplot.close()
+    return

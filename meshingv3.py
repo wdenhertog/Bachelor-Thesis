@@ -1281,7 +1281,7 @@ class mesh:
         for path in zeropathlist:
             for p1 in path:
                 if (not p1.iszeropoint) and (
-                not p1.isboundary):  # ...search for closest zmid of zeroedge in closeto zeroedges
+                        not p1.isboundary):  # ...search for closest zmid of zeroedge in closeto zeroedges
 
                     candidates = []
                     othercandidates = []
@@ -1317,7 +1317,7 @@ class mesh:
                         choice[2].pprojected.append(p1)
 
                 elif p1.isboundary and (not p1.iszeropoint) and (
-                not p1.iscorner):  # ...search for candidates in nbedges on the boundary
+                        not p1.iscorner):  # ...search for candidates in nbedges on the boundary
                     candidate = False
                     for e in p1.nbedges:
                         if e.isboundary and e.iszeroedge:
@@ -1424,7 +1424,7 @@ class mesh:
                                 cont = False
                                 for p in pointstoconsider[-1].nbpoints:
                                     if p.isboundary and (p is not pointstoconsider[-2]) and (not p.iscorner) and (
-                                    not p.iszeropoint) and (not p.isconsidered):
+                                            not p.iszeropoint) and (not p.isconsidered):
                                         pointstoconsider.append(p)
                                         p.isconsidered = True
                                         cont = True
@@ -1775,6 +1775,17 @@ class mesh:
                 ['Maximum size', max(sizes)],
                 ['Standard deviation of sizes', np.std(sizes)]]
 
+    def gof(self):
+        # Calculates the mesh-wide goodness of fit and returns an array with the measures and their names
+        gof = [0, 0]
+        for e in self.levelsetedges:
+            gof[0] += e.length
+        for e in self.edges:
+            if e.islevelset:
+                gof[0] -= e.length
+        # TODO: area measure, look here: http://www.numericalexpert.com/blog/area_calculation/
+        return [['Measure of length', abs(gof[0])], ['Measure of area', abs(gof[1])]]
+
     ##########################################################################
     ##### Plot methods #######################################################
     ##########################################################################
@@ -1811,6 +1822,7 @@ class mesh:
         pyplot.yticks(fontsize=15)
         if show:
             pyplot.show()
+        pyplot.close()
 
     def plotz(self, zfun, directory):
         # Plots the level-set function as surfaceplot and as contourplot
@@ -1842,6 +1854,7 @@ class mesh:
 
         string = directory + zfun.__name__ + '_3dsurf.png'
         fig.savefig(string, dpi=fig.dpi, bbox_inches="tight")
+        pyplot.close(fig)
 
     def plotzeroz(self, savestring, dist=False, mode=1, plotchosenboundary=False):
         # Plots the mesh along with the zeroelements, edges and points
@@ -1926,6 +1939,7 @@ class mesh:
                     pyplot.plot(x, y, color=cm(i / n), marker='o', markersize=10)
 
         fig.savefig(savestring, dpi=fig.dpi, bbox_inches="tight")
+        pyplot.close(fig)
 
 
 if __name__ == "__main__":  # for testing purposes

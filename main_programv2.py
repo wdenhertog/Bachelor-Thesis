@@ -342,10 +342,12 @@ sizestoapply = [1/8]
 # farr = [cos_times_sin, linear, circle, star, dumbbell]
 # farr = [cos_times_sin,linear,circle]
 # farr = [star,dumbbell]
-# farr = [cos_times_sin]
-# farr = [circle]
-farr = [linear]
 # farr = [linear, circle, star, dumbbell]
+# farr = [cos_times_sin]
+# farr = [star]
+farr = [linear]
+# farr = [dumbbell]
+# farr = [circle]
 
 
 for hstep in sizestoapply:  # sets the right parameters for each method and applies the method through simplemeshfit
