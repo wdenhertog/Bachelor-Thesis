@@ -144,3 +144,107 @@ def qualitycomparisonplot(femstats, efrstats, lbda, mu, method):
             'figures_FEM/' + titles[i].replace(' ', '_') + '_l_' + str(lbda) + '_m_' + str(mu) + '_' + method + '.png')
         pyplot.close()
     return
+
+
+def qualitymeasure(old_mesh, new_mesh):
+    # calculates the quality of the new mesh compared to the old mesh:
+    # \sum_{elements} ((oldarea(e) - newarea(e)) / oldarea(e) * (oldskewness(e) - newskewness(e)) / oldskewness(e))^2
+    quality = 0
+    for i in range(len(old_mesh.elements)):
+        oldarea = old_mesh.elements[i].size
+        if old_mesh.elements[i].skewness <= 0.0000001:
+            oldskewness = new_mesh.elements[i].skewness / 10
+        else:
+            oldskewness = old_mesh.elements[i].skewness
+        newarea = new_mesh.elements[i].size
+        newskewness = new_mesh.elements[i].skewness
+        quality += ((oldarea - newarea) / oldarea * (oldskewness - newskewness) / oldskewness) ** 2
+    return quality
+
+
+def fem_meshfit(gridsize, threshold, lbda, mu, farr):
+    m = mesh(gridsize, threshold)
+    standardmesh = mesh(gridsize, threshold)
+    m.plot()
+    s = stiffness_matrix(m, lbda, mu)
+    q = np.zeros((2 * len(m.points), 1))
+    methodname = 'FEM'
+    newtriang = False
+    flip = False
+    simplepointrelax = False
+    simplegridtozeropoint = False
+    fixedpointrelaxation = False
+    eulerrelaxation = False
+    shortestpath = True
+    distplot = True
+    redistribute = True
+    m.initzeroinfo(farr[0])
+    m_fit = simplemeshfit(0.3 * gridsize, 'Shortest path fit with redistribution', gridsize, gridsize / 100, farr,
+                          newtriang, flip,
+                          distplot,
+                          simplepointrelax,
+                          simplegridtozeropoint, redistribute)
+    m_fit.plot()
+    u_x_fit = np.zeros(len(m.points))
+    u_y_fit = np.zeros(len(m.points))
+    for i in range(len(m.points)):
+        u_x_fit[i] = (m_fit.points[i].coordinates[0] - m.points[i].coordinates[0])
+        u_y_fit[i] = (m_fit.points[i].coordinates[1] - m.points[i].coordinates[1])
+    u_xy = np.hstack((u_x_fit, u_y_fit))
+    u = meshrelaxation(m, u_xy, lbda, mu)
+
+    for p in m.points:
+        p.coordinates[0] += float(u[p.index])
+        p.coordinates[1] += float(u[p.index + len(m.points)])
+    m.plot()
+    m.setupboundaryplist()
+    m.finallevelsetinfoupdate()
+    for i in m.points:
+        m.points[i.index].iszeropath = m_fit.points[i.index].iszeropath
+    for i in range(len(m.edges)):
+        m.edges[i].islevelset = m_fit.edges[i].islevelset
+        m.edges[i].iszeroedge = m_fit.edges[i].iszeroedge
+    for e in m.edges:
+        e.length = e.calclength()
+    for el in m.elements:
+        el.size = el.calcsize()
+        el.skewness = el.calcskew()
+
+    m.plotzeroz('figures_FEM/FEMfit.png', mode=2)
+    m_fit.plotzeroz('figures_FEM/FEMstartsituation.png', mode=2)
+    redistribute = False
+    eulerrelaxation = True
+    m_efr = simplemeshfit(0.3 * hstep, 'Shortest path fit with Euler forward relaxation', hstep, hstep / 100, farr,
+                          newtriang, flip, distplot, simplepointrelax, simplegridtozeropoint, redistribute)
+    femstats, efrstats = qualitycomparison(m, m_efr)
+    qualitycomparisonplot(femstats, efrstats, lbda, mu, farr[0].__name__)
+    quality = qualitymeasure(standardmesh, m)
+    print('Quality measure = ' + str(quality))
+    return m, quality
+
+
+def recursiveoptimisation(lower_boundary, upper_boundary, gridsize, threshold, farr, tol=1e-5, h=None, c=None, d=None,
+                          fc=None, fd=None):
+    invphi = (math.sqrt(5) - 1) / 2  # 1/phi
+    invphi2 = (3 - math.sqrt(5)) / 2  # 1/phi^2
+    (lower_boundary, upper_boundary) = (min(lower_boundary, upper_boundary), max(lower_boundary, upper_boundary))
+    if h is None:
+        h = upper_boundary - lower_boundary
+    if h <= tol:
+        return lower_boundary, upper_boundary
+    if c is None:
+        c = lower_boundary + invphi2 * h
+    if d is None:
+        d = lower_boundary + invphi * h
+    if fc is None:
+        mc, fc = fem_meshfit(gridsize, threshold, c, 1, farr)
+    if fd is None:
+        md, fd = fem_meshfit(gridsize, threshold, d, 1, farr)
+    if fc < fd:
+        print('lower boundary: ' + str(lower_boundary) + ' upper boundary: ' + str(d))
+        return recursiveoptimisation(lower_boundary, d, gridsize, threshold, farr, tol, h * invphi, c=None, fc=None,
+                                     d=c, fd=fc)
+    else:
+        print('lower boundary: ' + str(c) + ' upper boundary: ' + str(upper_boundary))
+        return recursiveoptimisation(c, upper_boundary, gridsize, threshold, farr, tol, h * invphi, c=d, fc=fd, d=None,
+                                     fd=None)
