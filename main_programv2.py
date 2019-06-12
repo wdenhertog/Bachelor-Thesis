@@ -11,16 +11,11 @@ should be published with the same kind of licence and should be properly accredi
 
 from meshingv3 import *
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
-import pylab
 
 import os
 
 import matplotlib
 import matplotlib.pyplot as pyplot
-import matplotlib.tri as tri
-
-import math
 
 try:
     import cPickle as pickle
@@ -208,8 +203,9 @@ def qualityplot(allmethodnames, hstep, fnames=False):
     return
 
 
-def simplesol(z, thresh, qdata, relaxthresh, newtriang=False, flip=False, distplot=False, simplepointrelax=False,
-              simplegridtozeropoint=False, redistribute=False):
+def simplesol(z, hstep, thresh, qdata, relaxthresh, newtriang=False, flip=False, distplot=False, simplepointrelax=False,
+              simplegridtozeropoint=False, redistribute=False, eulerrelaxation=False, fixedpointrelaxation=False,
+              shortestpath=False):
     # This function creates a mesh and applies the given methods that are given as True in the input with the test function z
     # It adds the resulting quality data in the qualitycontainer given in the input
 
@@ -291,16 +287,17 @@ def simplesol(z, thresh, qdata, relaxthresh, newtriang=False, flip=False, distpl
 
 def simplemeshfit(thresh, methodname, hstep, relaxthresh, farr=[linear, circle, star, dumbbell],
                   newtriang=False, flip=False, distplot=False, simplepointrelax=False, simplegridtozeropoint=False,
-                  redistribute=False):
+                  redistribute=False, eulerrelaxation=False, fixedpointrelaxation=False, shortestpath=False):
     # This function creates the qualitycontainer for a specific hstep size and method and applies the method through the simplesol function for each test-function in farr
     print('hstep = ' + str(hstep))
     qdata = qualitycontainer(methodname, hstep)
 
     qdata.fnames.append(farr[0].__name__)
     print('Applying method <' + methodname + '> for function ' + farr[0].__name__)
-    mf = simplesol(farr[0], thresh, qdata, relaxthresh, newtriang=newtriang, flip=flip, distplot=distplot,
+    mf = simplesol(farr[0], hstep, thresh, qdata, relaxthresh, newtriang=newtriang, flip=flip, distplot=distplot,
                    simplepointrelax=simplepointrelax, simplegridtozeropoint=simplegridtozeropoint,
-                   redistribute=redistribute)
+                   redistribute=redistribute, eulerrelaxation=eulerrelaxation,
+                   fixedpointrelaxation=fixedpointrelaxation, shortestpath=shortestpath)
     qdata.save(hstep)
     return mf
 
@@ -309,95 +306,95 @@ def simplemeshfit(thresh, methodname, hstep, relaxthresh, farr=[linear, circle, 
 ##### Program execution ##################################################
 ##########################################################################
 
-print('-----------------------------------------------------')
-
-allmethodnames = ['Cut method', 'Cut and flip method', 'Shortest path fit', 'Shortest path fit with redistribution',
-                  'Shortest path fit with Euler forward relaxation']
-
-# Choose and uncomment the right set of method from the allmethodnames list below (and comment out the rest)
-
-
-# methodstoapply = []
-# methodstoapply = ['Cut method']
-# methodstoapply = ['Cut and flip method']
-# methodstoapply = ['Shortest path fit']
-methodstoapply = ['Shortest path fit with redistribution']
-# methodstoapply = ['Shortest path fit with fixed-point relaxation']
-# methodstoapply = ['Shortest path fit with Euler forward relaxation']
-# methodstoapply = ['Cut method','Cut and flip method']
-# methodstoapply = ['Shortest path fit', 'Shortest path fit with redistribution',
-                  #'Shortest path fit with Euler forward relaxation']
-# methodstoapply = allmethodnames
-
-
-# Choose the right set of sizes to apply from the list below
-
-# sizestoapply = [1 / 8, 1 / 16]
-sizestoapply = [1/8]
-# sizestoapply = [1/16]
-
-
-# Choose the right set of test functions to apply below
-
-# farr = [cos_times_sin, linear, circle, star, dumbbell]
-# farr = [cos_times_sin,linear,circle]
-# farr = [star,dumbbell]
-# farr = [linear, circle, star, dumbbell]
-# farr = [cos_times_sin]
-# farr = [star]
-farr = [linear]
-# farr = [dumbbell]
-# farr = [circle]
-
-
-for hstep in sizestoapply:  # sets the right parameters for each method and applies the method through simplemeshfit
-    for methodname in methodstoapply:
-        newtriang = False
-        flip = False
-        simplepointrelax = False
-        distplot = False
-        simplegridtozeropoint = False
-        shortestpath = False
-        fixedpointrelaxation = False
-        eulerrelaxation = False
-        redistribute = False
-        if methodname == 'Cut method':
-            simplegridtozeropoint = True
-            newtriang = True
-        elif methodname == 'Cut and flip method':
-            simplegridtozeropoint = True
-            newtriang = True
-            flip = True
-        elif methodname == 'Cut, flip, point relaxation':
-            simplegridtozeropoint = True
-            newtriang = True
-            flip = True
-            simplepointrelax = True
-        elif methodname == 'Shortest path fit':
-            shortestpath = True
-            distplot = True
-        elif methodname == 'Shortest path fit with redistribution':
-            shortestpath = True
-            distplot = True
-            redistribute = True
-        elif methodname == 'Shortest path fit with fixed-point relaxation':
-            shortestpath = True
-            distplot = True
-            fixedpointrelaxation = True
-        elif methodname == 'Shortest path fit with Euler forward relaxation':
-            shortestpath = True
-            distplot = True
-            eulerrelaxation = True
-
-        relaxthresh = hstep / 100  # minimum displacement threshold for relaxing gridpoints in point relaxation method
-        thresh = 0.3 * hstep  # maximum distance threshold for moving gridpoints in simplegridtozeropoint function
-        simplemeshfit(thresh, methodname, hstep, relaxthresh, farr=farr,
-                      newtriang=newtriang, flip=flip, distplot=distplot, simplepointrelax=simplepointrelax,
-                      simplegridtozeropoint=simplegridtozeropoint, redistribute=redistribute)
-
-        pyplot.close('all')  # The plots can be found in the Saved_figures directory
-
-    print('Calculating and plotting the quality measurement data')
-    qualityplot(allmethodnames, hstep, fnames=False)
-
-    pyplot.close('all')  # The plots can be found in the Saved_figures directory
+# print('-----------------------------------------------------')
+#
+# allmethodnames = ['Cut method', 'Cut and flip method', 'Shortest path fit', 'Shortest path fit with redistribution',
+#                   'Shortest path fit with Euler forward relaxation']
+#
+# # Choose and uncomment the right set of method from the allmethodnames list below (and comment out the rest)
+#
+#
+# # methodstoapply = []
+# # methodstoapply = ['Cut method']
+# # methodstoapply = ['Cut and flip method']
+# # methodstoapply = ['Shortest path fit']
+# methodstoapply = ['Shortest path fit with redistribution']
+# # methodstoapply = ['Shortest path fit with fixed-point relaxation']
+# # methodstoapply = ['Shortest path fit with Euler forward relaxation']
+# # methodstoapply = ['Cut method','Cut and flip method']
+# # methodstoapply = ['Shortest path fit', 'Shortest path fit with redistribution',
+# # 'Shortest path fit with Euler forward relaxation']
+# # methodstoapply = allmethodnames
+#
+#
+# # Choose the right set of sizes to apply from the list below
+#
+# # sizestoapply = [1 / 8, 1 / 16]
+# sizestoapply = [1 / 8]
+# # sizestoapply = [1/16]
+#
+#
+# # Choose the right set of test functions to apply below
+#
+# # farr = [cos_times_sin, linear, circle, star, dumbbell]
+# # farr = [cos_times_sin,linear,circle]
+# # farr = [star,dumbbell]
+# # farr = [linear, circle, star, dumbbell]
+# # farr = [cos_times_sin]
+# # farr = [star]
+# farr = [linear]
+# # farr = [dumbbell]
+# # farr = [circle]
+#
+#
+# for hstep in sizestoapply:  # sets the right parameters for each method and applies the method through simplemeshfit
+#     for methodname in methodstoapply:
+#         newtriang = False
+#         flip = False
+#         simplepointrelax = False
+#         distplot = False
+#         simplegridtozeropoint = False
+#         shortestpath = False
+#         fixedpointrelaxation = False
+#         eulerrelaxation = False
+#         redistribute = False
+#         if methodname == 'Cut method':
+#             simplegridtozeropoint = True
+#             newtriang = True
+#         elif methodname == 'Cut and flip method':
+#             simplegridtozeropoint = True
+#             newtriang = True
+#             flip = True
+#         elif methodname == 'Cut, flip, point relaxation':
+#             simplegridtozeropoint = True
+#             newtriang = True
+#             flip = True
+#             simplepointrelax = True
+#         elif methodname == 'Shortest path fit':
+#             shortestpath = True
+#             distplot = True
+#         elif methodname == 'Shortest path fit with redistribution':
+#             shortestpath = True
+#             distplot = True
+#             redistribute = True
+#         elif methodname == 'Shortest path fit with fixed-point relaxation':
+#             shortestpath = True
+#             distplot = True
+#             fixedpointrelaxation = True
+#         elif methodname == 'Shortest path fit with Euler forward relaxation':
+#             shortestpath = True
+#             distplot = True
+#             eulerrelaxation = True
+#
+#         relaxthresh = hstep / 100  # minimum displacement threshold for relaxing gridpoints in point relaxation method
+#         thresh = 0.3 * hstep  # maximum distance threshold for moving gridpoints in simplegridtozeropoint function
+#         simplemeshfit(thresh, methodname, hstep, relaxthresh, farr=farr,
+#                       newtriang=newtriang, flip=flip, distplot=distplot, simplepointrelax=simplepointrelax,
+#                       simplegridtozeropoint=simplegridtozeropoint, redistribute=redistribute)
+#
+#         pyplot.close('all')  # The plots can be found in the Saved_figures directory
+#
+#     print('Calculating and plotting the quality measurement data')
+#     qualityplot(allmethodnames, hstep, fnames=False)
+#
+#     pyplot.close('all')  # The plots can be found in the Saved_figures directory
