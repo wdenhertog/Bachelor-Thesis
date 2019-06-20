@@ -94,9 +94,11 @@ def meshrelaxation(grid, u, lbda, mu):
     return np.linalg.solve(s, u)
 
 
-def qualitycomparison(femgrid, efrgrid):
+def qualitycomparison(femgrid, efrgrid, farr):
     # calculate the quality of the mesh generated with FEM (femgrid) and the mesh generated with
     # Euler Forward Relaxation (efrgrid)
+    femgrid.initzeroinfo(farr[0])
+    efrgrid.initzeroinfo(farr[0])
     femstats = femgrid.skewness()
     efrstats = efrgrid.skewness()
     femsizes = femgrid.sizes()
@@ -104,22 +106,18 @@ def qualitycomparison(femgrid, efrgrid):
     for i in range(len(femsizes)):
         femstats.append(femsizes[i])
         efrstats.append(efrsizes[i])
-    femgof = femgrid.gof()
-    efrgof = efrgrid.gof()
-    for i in range(len(femgof)):
-        femstats.append(femgof[i])
-        efrstats.append(efrgof[i])
     return femstats, efrstats
 
 
-def qualitycomparisonplot(femstats, efrstats, lbda, mu, method, gridsize, threshold):
+def qualitycomparisonplot(femstats, efrstats, lbda, mu, method, gridsize, threshold, farr):
     # create histograms of the quality comparison and save them on the harddrive
     m = mesh(gridsize, threshold)
+    m.initzeroinfo(farr[0])
     standardstats = m.skewness()
     standardsizes = m.sizes()
     for i in range(len(standardsizes)):
         standardstats.append(standardsizes[i])
-    standardgof = m.gof()
+    standardgof = m.gof(farr)
     for i in range(len(standardgof)):
         standardstats.append(standardgof[i])
     titles = ['Average skewness', 'Maximum skewness', 'Standard deviation of skewnesses', 'Minimum size',
@@ -138,14 +136,14 @@ def qualitycomparisonplot(femstats, efrstats, lbda, mu, method, gridsize, thresh
 
 def qualitymeasure(old_mesh, new_mesh, lbda):
     # calculates the quality of the new mesh compared to the old mesh:
-    # \sum_{elements} (((1+(oldarea-newarea)/oldarea)^2)*(1+(oldskew-newskew)^2))
+    # \sum_{elements} (((1+(oldarea-newarea)/oldarea)^2)*(1+(oldskew-newskew)^2)-1)
     quality = 0
     for i in range(len(old_mesh.elements)):
         oldarea = old_mesh.elements[i].size
         oldskewness = old_mesh.elements[i].skewness
         newarea = new_mesh.elements[i].size
         newskewness = new_mesh.elements[i].skewness
-        quality += (1 + ((newarea - oldarea) / oldarea) ** 2) * (1 + (oldskewness - newskewness) ** 2)
+        quality += ((1 + ((newarea - oldarea) / oldarea) ** 2) * (1 + (oldskewness - newskewness) ** 2) - 1)
     return quality
 
 
@@ -210,6 +208,7 @@ def fem_meshfit(gridsize, threshold, lbda, mu, farr, spfr):
         el.skewness = el.calcskew()
 
     m.plotzeroz('figures_FEM/FEMfit.png', mode=2)
+    m.plotzeroz('figures_FEM/FEMfit2.png', mode=1)
     quality = qualitymeasure(standardmesh, m, lbda)
     print('Quality measure = ' + str(quality))
     return m, quality

@@ -881,6 +881,13 @@ class element:
             del self
             return
 
+    def checkareameasure(self, farr):
+        if len(self.zpointonedge) == 0:
+            return 0
+        else:
+            # TODO: impement size calculation
+            return 1
+
 
 ##########################################################################
 ##### Mesh class #########################################################
@@ -1775,7 +1782,7 @@ class mesh:
                 ['Maximum size', max(sizes)],
                 ['Standard deviation of sizes', np.std(sizes)]]
 
-    def gof(self):
+    def gof(self, farr):
         # Calculates the mesh-wide goodness of fit and returns an array with the measures and their names
         gof = [0, 0]
         for e in self.levelsetedges:
@@ -1783,7 +1790,8 @@ class mesh:
         for e in self.edges:
             if e.islevelset:
                 gof[0] -= e.length
-        # TODO: area measure, look here: http://www.numericalexpert.com/blog/area_calculation/
+        for e in self.elements:
+            gof[1] += e.checkareameasure(farr)
         return [['Measure of length', abs(gof[0])], ['Measure of area', abs(gof[1])]]
 
     ##########################################################################
@@ -1836,7 +1844,7 @@ class mesh:
         pyplot.gca().set_aspect('equal')
         pyplot.tricontourf(triang, z)
         pyplot.colorbar()
-        pyplot.tricontour(triang, z, colors='k', levels=[-0.5, 0, 0.5])
+        pyplot.tricontour(triang, z, colors='k', levels=[0])
         pyplot.xlabel('$x$', fontsize=20)
         pyplot.ylabel('$y$', fontsize=20)
         pyplot.xticks(fontsize=15)
