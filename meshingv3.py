@@ -1864,7 +1864,8 @@ class mesh:
         fig.savefig(string, dpi=fig.dpi, bbox_inches="tight")
         pyplot.close(fig)
 
-    def plotzeroz(self, savestring, dist=False, mode=1, plotchosenboundary=False):
+    def plotzeroz(self, savestring, dist=False, mode=1, plotchosenboundary=False, qualityelements=[],
+                  efrqualityelements=[]):
         # Plots the mesh along with the zeroelements, edges and points
         # mode defines the plot type, mode 1 shows zeroedges in red, zeroelement in grey etc.
         # mode 2 shows the size mismatch and the skewness in red and green respectively
@@ -1899,8 +1900,12 @@ class mesh:
                 refsize = 4 / len(self.elements)
                 t = 1 - 1 / (100 * abs(size - refsize) / h + 1) ** (1 / 4)
                 pyplot.fill(x, y, color=(1 - s, 1 - t, max(1 - t - s, 0)))
+            elif mode == 3:
+                maxquality = max(max(qualityelements), max(efrqualityelements))
+                amount_bl = qualityelements[self.elements.index(el)] / maxquality
+                pyplot.fill(x, y, color=(1 - amount_bl, 1 - amount_bl, 1 - amount_bl))
 
-        if not mode == 2:
+        if mode == 1:
             for e in self.levelsetedges:  # plot the levelsetedges blue
                 (p1, p2) = e.points
                 (x1, y1) = p1.coordinates
