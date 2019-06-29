@@ -881,6 +881,13 @@ class element:
             del self
             return
 
+    def checkareameasure(self, farr):
+        if len(self.zpointonedge) == 0:
+            return 0
+        else:
+            # TODO: impement size calculation
+            return 1
+
 
 ##########################################################################
 ##### Mesh class #########################################################
@@ -1281,7 +1288,7 @@ class mesh:
         for path in zeropathlist:
             for p1 in path:
                 if (not p1.iszeropoint) and (
-                not p1.isboundary):  # ...search for closest zmid of zeroedge in closeto zeroedges
+                        not p1.isboundary):  # ...search for closest zmid of zeroedge in closeto zeroedges
 
                     candidates = []
                     othercandidates = []
@@ -1317,7 +1324,7 @@ class mesh:
                         choice[2].pprojected.append(p1)
 
                 elif p1.isboundary and (not p1.iszeropoint) and (
-                not p1.iscorner):  # ...search for candidates in nbedges on the boundary
+                        not p1.iscorner):  # ...search for candidates in nbedges on the boundary
                     candidate = False
                     for e in p1.nbedges:
                         if e.isboundary and e.iszeroedge:
@@ -1424,7 +1431,7 @@ class mesh:
                                 cont = False
                                 for p in pointstoconsider[-1].nbpoints:
                                     if p.isboundary and (p is not pointstoconsider[-2]) and (not p.iscorner) and (
-                                    not p.iszeropoint) and (not p.isconsidered):
+                                            not p.iszeropoint) and (not p.isconsidered):
                                         pointstoconsider.append(p)
                                         p.isconsidered = True
                                         cont = True
@@ -1775,6 +1782,18 @@ class mesh:
                 ['Maximum size', max(sizes)],
                 ['Standard deviation of sizes', np.std(sizes)]]
 
+    def gof(self, farr):
+        # Calculates the mesh-wide goodness of fit and returns an array with the measures and their names
+        gof = [0, 0]
+        for e in self.levelsetedges:
+            gof[0] += e.length
+        for e in self.edges:
+            if e.islevelset:
+                gof[0] -= e.length
+        for e in self.elements:
+            gof[1] += e.checkareameasure(farr)
+        return [['Measure of length', abs(gof[0])], ['Measure of area', abs(gof[1])]]
+
     ##########################################################################
     ##### Plot methods #######################################################
     ##########################################################################
@@ -1811,6 +1830,7 @@ class mesh:
         pyplot.yticks(fontsize=15)
         if show:
             pyplot.show()
+        pyplot.close()
 
     def plotz(self, zfun, directory):
         # Plots the level-set function as surfaceplot and as contourplot
@@ -1824,7 +1844,7 @@ class mesh:
         pyplot.gca().set_aspect('equal')
         pyplot.tricontourf(triang, z)
         pyplot.colorbar()
-        pyplot.tricontour(triang, z, colors='k', levels=[-0.5, 0, 0.5])
+        pyplot.tricontour(triang, z, colors='k', levels=[0])
         pyplot.xlabel('$x$', fontsize=20)
         pyplot.ylabel('$y$', fontsize=20)
         pyplot.xticks(fontsize=15)
@@ -1842,8 +1862,10 @@ class mesh:
 
         string = directory + zfun.__name__ + '_3dsurf.png'
         fig.savefig(string, dpi=fig.dpi, bbox_inches="tight")
+        pyplot.close(fig)
 
-    def plotzeroz(self, savestring, dist=False, mode=1, plotchosenboundary=False):
+    def plotzeroz(self, savestring, dist=False, mode=1, plotchosenboundary=False, qualityelements=[],
+                  efrqualityelements=[]):
         # Plots the mesh along with the zeroelements, edges and points
         # mode defines the plot type, mode 1 shows zeroedges in red, zeroelement in grey etc.
         # mode 2 shows the size mismatch and the skewness in red and green respectively
@@ -1878,8 +1900,12 @@ class mesh:
                 refsize = 4 / len(self.elements)
                 t = 1 - 1 / (100 * abs(size - refsize) / h + 1) ** (1 / 4)
                 pyplot.fill(x, y, color=(1 - s, 1 - t, max(1 - t - s, 0)))
+            elif mode == 3:
+                maxquality = max(max(qualityelements), max(efrqualityelements))
+                amount_bl = qualityelements[self.elements.index(el)] / maxquality
+                pyplot.fill(x, y, color=(1 - amount_bl, 1 - amount_bl, 1 - amount_bl))
 
-        if not mode == 2:
+        if mode == 1:
             for e in self.levelsetedges:  # plot the levelsetedges blue
                 (p1, p2) = e.points
                 (x1, y1) = p1.coordinates
@@ -1926,6 +1952,7 @@ class mesh:
                     pyplot.plot(x, y, color=cm(i / n), marker='o', markersize=10)
 
         fig.savefig(savestring, dpi=fig.dpi, bbox_inches="tight")
+        pyplot.close(fig)
 
 
 if __name__ == "__main__":  # for testing purposes

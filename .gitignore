@@ -1,4 +1,5 @@
-
+*.iml
 *.xml
-*.xml
-.idea/workspace.xml
+.idea/
+/Saved_figures/
+/figures_FEM/
